@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Web.Http.Controllers;
+using System.Web.Http.Results;
 using Ben.Controllers;
 using NUnit.Framework;
 
@@ -12,7 +14,8 @@ namespace Ben.Tests
         {
             // Arrange
             var controller = new ValuesController();
-            //todo: ???
+            controller.Post("BenTest");
+            controller.Post("ChrisIsThaManNowDoge");
 
             // Act
             var result = controller.Get();
@@ -20,8 +23,8 @@ namespace Ben.Tests
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
-            Assert.AreEqual("", result.ElementAt(0));
-            Assert.AreEqual("", result.ElementAt(1));
+            Assert.AreEqual("{ id = 1, value = BenTest }", result.ElementAt(0).ToString());
+            Assert.AreEqual("{ id = 2, value = ChrisIsThaManNowDoge }", result.ElementAt(1).ToString());
         }
 
         [Test]
@@ -29,14 +32,13 @@ namespace Ben.Tests
         {
             // Arrange
             var controller = new ValuesController();
-            //todo: ???
+            controller.Post("Ben has done it");
 
             // Act
-            var result = controller.Get(1).ToString();
+            var result = controller.Get(1);
 
             // Assert
-            Assert.AreEqual("Ben has done it", result);
-            Assert.Fail("fill in the blanks buddy");
+            Assert.AreEqual("Ben has done it", ((OkNegotiatedContentResult<string>)result).Content);
         }
 
         [Test]
@@ -49,9 +51,9 @@ namespace Ben.Tests
             var result = controller.Post("value");
 
             // Assert
-            //            Assert.IsInstanceOfType(result, typeof(CreatedNegotiatedContentResult<string>));
-            //            Assert.AreEqual("?????", ((CreatedNegotiatedContentResult<string>)result).Location.ToString());
-            Assert.Fail("fill in the blanks buddy");
+            Assert.IsInstanceOf<CreatedNegotiatedContentResult<int>>(result);
+            Assert.AreEqual("api/values/1", ((CreatedNegotiatedContentResult<int>)result).Location.ToString());
+            Assert.AreEqual(1, ((CreatedNegotiatedContentResult<int>)result).Content);
         }
 
         [Test]

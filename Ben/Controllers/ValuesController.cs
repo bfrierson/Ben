@@ -13,7 +13,7 @@ namespace Ben.Controllers
         public IEnumerable<dynamic> Get()
         {
             return ValuesDb
-                .Select(v => new { id = v.Key, value = v.Value })
+                .Select(v => new { id = v.Key, value = v.Value })   //Anon Type
                 .ToList();
         }
 
@@ -34,7 +34,7 @@ namespace Ben.Controllers
 
             ValuesDb.Add(nextId, value);
 
-            return Created("api/values/" + nextId, value);
+            return Created("api/values/" + nextId, nextId);
         }
 
         private static int NextId()
