@@ -61,14 +61,14 @@ namespace Ben.Tests
         {
             // Arrange
             ValuesController controller = new ValuesController();
-            // todo: add item to apply the PUT to.
+            controller.Post("value1");
 
             // Act
-            // todo: var result = controller.Put(???, "value");
+            var result = controller.Put(1, "Change Me");
 
-            // Assert
-            // Assert.IsInstanceOfType(result, typeof(???));
-            Assert.Fail("fill in the blanks buddy");
+            Assert.AreEqual(1, ((CreatedNegotiatedContentResult<int>)result).Content);
+            Assert.AreEqual("Change Me", result);
+            //Assert.IsInstanceOfType(result, typeof(???));
         }
 
         [Test]
@@ -76,11 +76,14 @@ namespace Ben.Tests
         {
             // Arrange
             ValuesController controller = new ValuesController();
+            controller.Post("PutNotHere");
 
             // Act
-            var result = controller.Put(999, "value");
+            var result = controller.Put(5, "Changed");
+
 
             // Assert
+            Assert.AreEqual("System.Web.Http.Results.NotFoundResult", result.ToString());
             // todo: what should the result be if id 5 does not exist? 
             // Assert.IsInstanceOfType(result, typeof(???));
             Assert.Fail("fill in the blanks buddy");
@@ -91,15 +94,15 @@ namespace Ben.Tests
         {
             // Arrange
             ValuesController controller = new ValuesController();
-            // todo: add item to apply the DELETE to.
+            controller.Post("DeleteMe");
 
             // Act
-            // todo: controller.Delete(???);
+            controller.Delete(1);
+            var result = controller.Get(1);
 
             // Assert
-            // todo: what response code do you expect?
+            Assert.AreEqual("System.Web.Http.Results.NotFoundResult", result.ToString());
             // todo: how can you double check the item was deleted?
-            Assert.Fail("fill in the blanks buddy");
         }
     }
 }
