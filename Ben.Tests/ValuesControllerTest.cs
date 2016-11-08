@@ -66,9 +66,8 @@ namespace Ben.Tests
             // Act
             var result = controller.Put(1, "Change Me");
 
-            Assert.AreEqual(1, ((CreatedNegotiatedContentResult<int>)result).Content);
-            Assert.AreEqual("Change Me", result);
-            //Assert.IsInstanceOfType(result, typeof(???));
+            //Assert
+            Assert.IsInstanceOf<OkResult>(result);
         }
 
         [Test]
@@ -83,10 +82,7 @@ namespace Ben.Tests
 
 
             // Assert
-            Assert.AreEqual("System.Web.Http.Results.NotFoundResult", result.ToString());
-            // todo: what should the result be if id 5 does not exist? 
-            // Assert.IsInstanceOfType(result, typeof(???));
-            Assert.Fail("fill in the blanks buddy");
+            Assert.IsInstanceOf<NotFoundResult>(result);
         }
 
         [Test]
@@ -97,11 +93,14 @@ namespace Ben.Tests
             controller.Post("DeleteMe");
 
             // Act
-            controller.Delete(1);
-            var result = controller.Get(1);
+            var result = controller.Delete(1);
 
             // Assert
-            Assert.AreEqual("System.Web.Http.Results.NotFoundResult", result.ToString());
+            Assert.IsInstanceOf<OkResult>(result);
+
+            var doubleCheck = controller.Get(1);
+
+            Assert.IsInstanceOf<NotFoundResult>(doubleCheck);
             // todo: how can you double check the item was deleted?
         }
     }
